@@ -61,7 +61,7 @@ public class JogoServiceTest {
         // Verificando que o vencedor foi salvo antes do envio do SMS
         verify(vencedorDao).salvar(vencedor1);
         verify(jogoDao).salva(jogo1);
-        verify(smsService).enviar(vencedor1, "Parabéns, você venceu o jogo!");
+        verify(smsService).enviar(new Sms(vencedor1, "Parabéns, você venceu o jogo!"));
 
         // Garantindo que o SMS não seja enviado antes dos dados serem salvos
         InOrder inOrder = inOrder(vencedorDao, jogoDao, smsService);
