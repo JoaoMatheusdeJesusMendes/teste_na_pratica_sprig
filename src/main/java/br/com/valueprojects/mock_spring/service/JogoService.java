@@ -41,14 +41,15 @@ public class JogoService {
     }
     
     public Participante vencedor(Jogo jogo) {
-    	Participante vencedor = null;
-    	juiz.julga(jogo);
-    	double pontosvencedor = juiz.getPrimeiroColocado();
-    	for (Resultado resultado: jogo.getResultados()) {
-    		if(resultado.getMetrica() == pontosvencedor) {
-    			vencedor = resultado.getParticipante();
-    		}
-    	}
-    	return vencedor;
+        Participante vencedor = null;
+        juiz.julga(jogo);
+        double pontosvencedor = juiz.getPrimeiroColocado();
+        for (Resultado resultado: jogo.getResultados()) {
+            if (resultado.getMetrica() == pontosvencedor) {
+                vencedor = resultado.getParticipante();
+            }
+        }
+        return vencedor;
     }
+
 }
