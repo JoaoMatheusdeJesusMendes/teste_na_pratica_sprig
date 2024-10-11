@@ -29,14 +29,10 @@ public class JogoService {
 
     public void processarJogos(List<Jogo> jogos) {
         for (Jogo jogo : jogos) {
-            // Supondo que Jogo tem um método isFinalizado()
             if (jogo.isFinalizado() && finalizaJogo.iniciouSemanaAnterior(jogo)) {
-                // Identificar o vencedor
             	Participante vencedor = vencedor(jogo);             
-                // Salvar o jogo e o vencedor
                 vencedorDao.salvar(vencedor);
                 jogoDao.salva(jogo);
-                // Enviar SMS para o vencedor
                 smsService.enviar(new Sms(vencedor, "Parabéns, você venceu o jogo!"));
             }
         }

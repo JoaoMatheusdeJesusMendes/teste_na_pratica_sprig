@@ -9,7 +9,6 @@ public class SmsService implements Comunicacao {
     @Override
     public boolean enviar(Sms sms) {
     	boolean foiEnviado = false;
-        // Simula o envio do SMS
         System.out.println(sms.getVencedor() + sms.getTexto());
         foiEnviado = true;
         return foiEnviado;

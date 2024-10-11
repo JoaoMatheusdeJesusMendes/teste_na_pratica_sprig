@@ -62,8 +62,6 @@ public class FinalizaJogoTest {
 			Jogo jogo1 = new CriadorDeJogo().para("Cata moedas").naData(antiga).constroi();
 			Jogo jogo2 = new CriadorDeJogo().para("Derruba barreiras").naData(antiga).constroi();
 
-			// mock no lugar de dao falso
-
 			List<Jogo> jogosAnteriores = Arrays.asList(jogo1, jogo2);
 
 			JogoDao daoFalso = mock(JogoDao.class);
@@ -73,10 +71,7 @@ public class FinalizaJogoTest {
 			FinalizaJogo finalizador = new FinalizaJogo(daoFalso);
 			finalizador.finaliza();
 
-			verify(daoFalso, times(1)).atualiza(jogo1);
-			//Mockito.verifyNoInteractions(daoFalso);
-	
-					
+			verify(daoFalso, times(1)).atualiza(jogo1);			
 			
 		}
 	 
