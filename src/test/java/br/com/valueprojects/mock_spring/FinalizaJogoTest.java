@@ -36,8 +36,6 @@ public class FinalizaJogoTest {
 	            .naData(antiga).constroi();
 	        Jogo jogo2 = new CriadorDeJogo().para("Derruba barreiras")
 	            .naData(antiga).constroi();
-
-	        // mock no lugar de dao falso
 	        
 	        List<Jogo> jogosAnteriores = Arrays.asList(jogo1, jogo2);
 
