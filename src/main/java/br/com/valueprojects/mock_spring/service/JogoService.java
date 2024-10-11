@@ -18,12 +18,14 @@ public class JogoService {
     private FinalizaJogo finalizaJogo;
     private Juiz juiz;
 
-    public JogoService(VencedorDao vencedorDao, SmsService smsService, FinalizaJogo finalizaJogo, Juiz juiz) {
+    public JogoService(VencedorDao vencedorDao, SmsService smsService, JogoDao jogoDao, FinalizaJogo finalizaJogo, Juiz juiz) {
         this.vencedorDao = vencedorDao;
         this.smsService = smsService;
+        this.jogoDao = jogoDao;
         this.finalizaJogo = finalizaJogo;
         this.juiz = juiz;
     }
+
 
     public void processarJogos(List<Jogo> jogos) {
         for (Jogo jogo : jogos) {

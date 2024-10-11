@@ -37,7 +37,7 @@ public class JogoServiceTest {
 	private JogoService jogoService;
 
 	public JogoServiceTest() {
-	    MockitoAnnotations.openMocks(this); // Inicializando os mocks para JUnit 5
+	    MockitoAnnotations.openMocks(this);
 	}
 
 	@Test
