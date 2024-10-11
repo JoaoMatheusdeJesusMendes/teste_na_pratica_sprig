@@ -18,10 +18,10 @@ public class JogoService {
     private FinalizaJogo finalizaJogo;
     private Juiz juiz;
 
-    public JogoService(VencedorDao vencedorDao, SmsService smsService) {
+    public JogoService(VencedorDao vencedorDao, SmsService smsService, FinalizaJogo finalizaJogo) {
         this.vencedorDao = vencedorDao;
         this.smsService = smsService;
-        this.jogoDao = jogoDao;
+        this.finalizaJogo = finalizaJogo;
     }
 
     public void processarJogos(List<Jogo> jogos) {
