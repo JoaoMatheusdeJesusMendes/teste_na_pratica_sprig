@@ -78,7 +78,7 @@ public class JogoServiceTest {
         // Verifica se o SMS foi enviado após salvar o vencedor e o jogo
         verify(smsService).enviar(argThat(s -> 
             s.getVencedor().getNome().equals(vencedor1.getNome()) &&
-            s.getMensagem().equals("Parabéns, você venceu o jogo!")
+            s.getTexto().equals("Parabéns, você venceu o jogo!")
         ));
 
         // Verificando ordem das interações
