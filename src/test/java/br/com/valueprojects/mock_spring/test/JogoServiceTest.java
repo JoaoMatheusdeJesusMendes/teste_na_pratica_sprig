@@ -48,6 +48,9 @@ public class JogoServiceTest {
         Participante vencedor1 = mock(Participante.class);
         Resultado resultado = mock(Resultado.class);
 
+        // Configurando o mock para retornar um nome válido
+        when(vencedor1.getNome()).thenReturn("João");
+
         // Simulando o comportamento esperado
         when(jogo1.isFinalizado()).thenReturn(true);
         when(finalizaJogo.iniciouSemanaAnterior(jogo1)).thenReturn(true);
@@ -120,3 +123,4 @@ public class JogoServiceTest {
         verifyNoInteractions(vencedorDao, jogoDao, smsService);
     }
 }
+
