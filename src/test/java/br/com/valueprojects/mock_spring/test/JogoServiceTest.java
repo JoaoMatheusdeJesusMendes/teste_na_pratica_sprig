@@ -47,9 +47,12 @@ public class JogoServiceTest {
         Jogo jogo1 = mock(Jogo.class);
         Participante vencedor1 = mock(Participante.class);
         Resultado resultado = mock(Resultado.class);
+        Sms sms = mock(Sms.class); // Mock do Sms
 
-        // Configurando o mock para retornar um nome válido
+        // Configurando o mock para retornar um nome válido e uma mensagem válida
         when(vencedor1.getNome()).thenReturn("João");
+        when(sms.getMensagem()).thenReturn("Parabéns, você venceu o jogo!"); // Simulando o retorno da mensagem
+        when(sms.getVencedor()).thenReturn(vencedor1); // Associando o vencedor ao SMS
 
         // Simulando o comportamento esperado
         when(jogo1.isFinalizado()).thenReturn(true);
@@ -73,9 +76,9 @@ public class JogoServiceTest {
         // Verifica se o jogo foi salvo
         verify(jogoDao).salva(jogo1);
         // Verifica se o SMS foi enviado após salvar o vencedor e o jogo
-        verify(smsService).enviar(argThat(sms -> 
-            sms.getVencedor().getNome().equals(vencedor1.getNome()) &&
-            sms.getMensagem().equals("Parabéns, você venceu o jogo!")
+        verify(smsService).enviar(argThat(s -> 
+            s.getVencedor().getNome().equals(vencedor1.getNome()) &&
+            s.getMensagem().equals("Parabéns, você venceu o jogo!")
         ));
 
         // Verificando ordem das interações
@@ -85,6 +88,7 @@ public class JogoServiceTest {
         inOrder.verify(jogoDao).salva(jogo1);
         inOrder.verify(smsService).enviar(any(Sms.class));
     }
+
 
     @Test
     public void naoDeveProcessarJogosNaoFinalizados() {
