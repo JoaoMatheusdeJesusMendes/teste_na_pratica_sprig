@@ -18,62 +18,62 @@ import infra.VencedorDao;
 
 public class JogoServiceTest {
 
-    @Mock
-    private VencedorDao vencedorDao;
+	@Mock
+	private VencedorDao vencedorDao;
 
-    @Mock
-    private JogoDao jogoDao;
+	@Mock
+	private JogoDao jogoDao;
 
-    @Mock
-    private SmsService smsService;
+	@Mock
+	private SmsService smsService;
 
-    @Mock
-    private FinalizaJogo finalizaJogo;
-    
-    @Mock
-    private Juiz juiz;
+	@Mock
+	private FinalizaJogo finalizaJogo;
 
-    @InjectMocks
-    private JogoService jogoService;
+	@Mock
+	private Juiz juiz;
 
-    public JogoServiceTest() {
-        MockitoAnnotations.openMocks(this); // Inicializando os mocks para JUnit 5
-    }
+	@InjectMocks
+	private JogoService jogoService;
 
-    @Test
-    public void deveProcessarJogosFinalizadosDaSemanaAnteriorComSucesso() {
-        // Arrange
-        Jogo jogo1 = mock(Jogo.class);
-        Participante vencedor1 = mock(Participante.class);
-        Resultado resultado = mock(Resultado.class);
+	public JogoServiceTest() {
+	    MockitoAnnotations.openMocks(this); // Inicializando os mocks para JUnit 5
+	}
 
-        // Simulando o comportamento esperado
-        when(jogo1.isFinalizado()).thenReturn(true);
-        when(finalizaJogo.iniciouSemanaAnterior(jogo1)).thenReturn(true);
-        when(juiz.getPrimeiroColocado()).thenReturn(10.0);
-        doNothing().when(juiz).julga(any(Jogo.class));
-        
-        List<Resultado> resultados = Arrays.asList(resultado);
-        when(jogo1.getResultados()).thenReturn(resultados);
-        when(resultado.getMetrica()).thenReturn(10.0);
-        when(resultado.getParticipante()).thenReturn(vencedor1);
+	@Test
+	public void deveProcessarJogosFinalizadosDaSemanaAnteriorComSucesso() {
+	    // Arrange
+	    Jogo jogo1 = mock(Jogo.class);
+	    Participante vencedor1 = mock(Participante.class);
+	    Resultado resultado = mock(Resultado.class);
 
-        List<Jogo> jogos = Arrays.asList(jogo1);
+	    // Simulando o comportamento esperado
+	    when(jogo1.isFinalizado()).thenReturn(true);
+	    when(finalizaJogo.iniciouSemanaAnterior(jogo1)).thenReturn(true);
+	    when(juiz.getPrimeiroColocado()).thenReturn(10.0);
+	    doNothing().when(juiz).julga(any(Jogo.class));
+	    
+	    List<Resultado> resultados = Arrays.asList(resultado);
+	    when(jogo1.getResultados()).thenReturn(resultados);
+	    when(resultado.getMetrica()).thenReturn(10.0);
+	    when(resultado.getParticipante()).thenReturn(vencedor1);
 
-        // Act
-        jogoService.processarJogos(jogos);
+	    List<Jogo> jogos = Arrays.asList(jogo1);
 
-        // Assert
-        verify(vencedorDao).salvar(vencedor1);
-        verify(jogoDao).salva(jogo1);
-        verify(smsService).enviar(new Sms(vencedor1, "Parabéns, você venceu o jogo!"));
+	    // Act
+	    jogoService.processarJogos(jogos);
 
-        // Verificando ordem das interações
-        InOrder inOrder = inOrder(vencedorDao, jogoDao, smsService);
-        inOrder.verify(vencedorDao).salvar(vencedor1);
-        inOrder.verify(jogoDao).salva(jogo1);
-        inOrder.verify(smsService).enviar(new Sms(vencedor1, "Parabéns, você venceu o jogo!"));
-    }
+	    // Assert
+	    verify(vencedorDao).salvar(vencedor1);
+	    verify(jogoDao).salva(jogo1);  // Certificando que jogoDao está sendo verificado
+	    verify(smsService).enviar(new Sms(vencedor1, "Parabéns, você venceu o jogo!"));
+
+	    // Verificando ordem das interações
+	    InOrder inOrder = inOrder(vencedorDao, jogoDao, smsService);
+	    inOrder.verify(vencedorDao).salvar(vencedor1);
+	    inOrder.verify(jogoDao).salva(jogo1);
+	    inOrder.verify(smsService).enviar(new Sms(vencedor1, "Parabéns, você venceu o jogo!"));
+	}
 
 
     @Test
