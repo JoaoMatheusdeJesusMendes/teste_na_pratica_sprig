@@ -42,7 +42,6 @@ public class JogoService {
     
     public Participante vencedor(Jogo jogo) {
     	Participante vencedor = null;
-    	this.juiz = juiz;
     	juiz.julga(jogo);
     	double pontosvencedor = juiz.getPrimeiroColocado();
     	for (Resultado resultado: jogo.getResultados()) {
