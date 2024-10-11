@@ -1,24 +1,20 @@
 package br.com.valueprojects.mock_spring.test;
 import static org.mockito.Mockito.*;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InOrder;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.InOrder;
 
-import br.com.valueprojects.mock_spring.model.FinalizaJogo;
-import br.com.valueprojects.mock_spring.model.Jogo;
-import br.com.valueprojects.mock_spring.model.Participante;
-import br.com.valueprojects.mock_spring.model.Sms;
+import br.com.valueprojects.mock_spring.model.*;
 import br.com.valueprojects.mock_spring.service.JogoService;
 import br.com.valueprojects.mock_spring.service.SmsService;
 import infra.JogoDao;
 import infra.VencedorDao;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class JogoServiceTest {
 
@@ -36,16 +32,13 @@ public class JogoServiceTest {
 
     @InjectMocks
     private JogoService jogoService;
-    
-    @SuppressWarnings("deprecation")
-	@Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+
+    public JogoServiceTest() {
+        MockitoAnnotations.openMocks(this); // Inicializando os mocks para JUnit 5
     }
 
-    
     @Test
-    public void testProcessarJogos_jogoFinalizadoDaSemanaAnterior_sucesso() {
+    public void deveProcessarJogosFinalizadosDaSemanaAnteriorComSucesso() {
         // Arrange
         Jogo jogo1 = mock(Jogo.class);
         Participante vencedor1 = mock(Participante.class);
@@ -61,12 +54,11 @@ public class JogoServiceTest {
         jogoService.processarJogos(jogos);
 
         // Assert
-        // Verificando que o vencedor foi salvo antes do envio do SMS
         verify(vencedorDao).salvar(vencedor1);
         verify(jogoDao).salva(jogo1);
         verify(smsService).enviar(new Sms(vencedor1, "Parabéns, você venceu o jogo!"));
 
-        // Garantindo que o SMS não seja enviado antes dos dados serem salvos
+        // Verificando ordem das interações
         InOrder inOrder = inOrder(vencedorDao, jogoDao, smsService);
         inOrder.verify(vencedorDao).salvar(vencedor1);
         inOrder.verify(jogoDao).salva(jogo1);
@@ -74,7 +66,7 @@ public class JogoServiceTest {
     }
 
     @Test
-    public void testProcessarJogos_jogoNaoFinalizado_semInteracaoComDaoOuSms() {
+    public void naoDeveProcessarJogosNaoFinalizados() {
         // Arrange
         Jogo jogo1 = mock(Jogo.class);
         
@@ -87,12 +79,11 @@ public class JogoServiceTest {
         jogoService.processarJogos(jogos);
 
         // Assert
-        // Verificando que nenhum DAO ou serviço SMS foi chamado
         verifyNoInteractions(vencedorDao, jogoDao, smsService);
     }
 
     @Test
-    public void testProcessarJogos_jogoNaoIniciouSemanaAnterior_semInteracaoComDaoOuSms() {
+    public void naoDeveProcessarJogosNaoIniciadosSemanaAnterior() {
         // Arrange
         Jogo jogo1 = mock(Jogo.class);
         
@@ -106,7 +97,6 @@ public class JogoServiceTest {
         jogoService.processarJogos(jogos);
 
         // Assert
-        // Verificando que nenhum DAO ou serviço SMS foi chamado
         verifyNoInteractions(vencedorDao, jogoDao, smsService);
     }
 }
