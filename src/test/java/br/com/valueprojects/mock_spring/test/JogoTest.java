@@ -45,7 +45,6 @@ public class JogoTest {
 		Participante leonardo = new Participante("Leonardo");
 
 		jogo.anota(new Resultado(leonardo, 500.0));
-		//deve ser ignorado
 		jogo.anota(new Resultado(leonardo, 600.0));
 
 		assertEquals(1, jogo.getResultados().size());

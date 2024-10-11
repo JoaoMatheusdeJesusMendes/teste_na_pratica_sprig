@@ -1,10 +1,12 @@
 package br.com.valueprojects.mock_spring.test;
 import static org.mockito.Mockito.*;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
+import org.mockito.MockitoAnnotations;
 
 import br.com.valueprojects.mock_spring.model.FinalizaJogo;
 import br.com.valueprojects.mock_spring.model.Jogo;
@@ -34,6 +36,13 @@ public class JogoServiceTest {
 
     @InjectMocks
     private JogoService jogoService;
+    
+    @SuppressWarnings("deprecation")
+	@Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     
     @Test
     public void testProcessarJogos_jogoFinalizadoDaSemanaAnterior_sucesso() {
