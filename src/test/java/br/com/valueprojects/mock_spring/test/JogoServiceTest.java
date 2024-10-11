@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.InOrder;
+import org.mockito.ArgumentCaptor;
 
 import br.com.valueprojects.mock_spring.model.*;
 import br.com.valueprojects.mock_spring.service.JogoService;
@@ -47,12 +48,9 @@ public class JogoServiceTest {
         Jogo jogo1 = mock(Jogo.class);
         Participante vencedor1 = mock(Participante.class);
         Resultado resultado = mock(Resultado.class);
-        Sms sms = mock(Sms.class); // Mock do Sms
 
-        // Configurando o mock para retornar um nome válido e uma mensagem válida
+        // Configurando o mock para retornar um nome válido
         when(vencedor1.getNome()).thenReturn("João");
-        when(sms.getMensagem()).thenReturn("Parabéns, você venceu o jogo!"); // Simulando o retorno da mensagem
-        when(sms.getVencedor()).thenReturn(vencedor1); // Associando o vencedor ao SMS
 
         // Simulando o comportamento esperado
         when(jogo1.isFinalizado()).thenReturn(true);
@@ -75,19 +73,23 @@ public class JogoServiceTest {
         verify(vencedorDao).salvar(vencedor1);
         // Verifica se o jogo foi salvo
         verify(jogoDao).salva(jogo1);
-        // Verifica se o SMS foi enviado após salvar o vencedor e o jogo
-        verify(smsService).enviar(argThat(s -> 
-            s.getVencedor().getNome().equals(vencedor1.getNome()) &&
-            s.getMensagem().equals("Parabéns, você venceu o jogo!")
-        ));
+
+        // Captura o objeto Sms que foi passado para o método enviar()
+        ArgumentCaptor<Sms> smsCaptor = ArgumentCaptor.forClass(Sms.class);
+        verify(smsService).enviar(smsCaptor.capture());
+
+        // Verifica os detalhes do SMS capturado
+        Sms smsEnviado = smsCaptor.getValue();
+        assertEquals("Parabéns, você venceu o jogo!", smsEnviado.getMensagem());
+        assertEquals(vencedor1.getNome(), smsEnviado.getVencedor().getNome());
 
         // Verificando ordem das interações
         InOrder inOrder = inOrder(vencedorDao, jogoDao, smsService);
-        // Certificando que o vencedor foi salvo primeiro, depois o jogo e por último o SMS
         inOrder.verify(vencedorDao).salvar(vencedor1);
         inOrder.verify(jogoDao).salva(jogo1);
         inOrder.verify(smsService).enviar(any(Sms.class));
     }
+
 
 
     @Test
