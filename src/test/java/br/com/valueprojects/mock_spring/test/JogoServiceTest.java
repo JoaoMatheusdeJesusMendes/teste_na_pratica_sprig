@@ -2,6 +2,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -9,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import br.com.valueprojects.mock_spring.model.FinalizaJogo;
 import br.com.valueprojects.mock_spring.model.Jogo;
 import br.com.valueprojects.mock_spring.model.Participante;
+import br.com.valueprojects.mock_spring.model.Sms;
 import br.com.valueprojects.mock_spring.service.JogoService;
 import br.com.valueprojects.mock_spring.service.SmsService;
 import infra.JogoDao;
@@ -65,7 +67,7 @@ public class JogoServiceTest {
         InOrder inOrder = inOrder(vencedorDao, jogoDao, smsService);
         inOrder.verify(vencedorDao).salvar(vencedor1);
         inOrder.verify(jogoDao).salva(jogo1);
-        inOrder.verify(smsService).enviar(vencedor1, "Parabéns, você venceu o jogo!");
+        inOrder.verify(smsService).enviar(new Sms(vencedor1, "Parabéns, você venceu o jogo!"));
     }
 
     @Test

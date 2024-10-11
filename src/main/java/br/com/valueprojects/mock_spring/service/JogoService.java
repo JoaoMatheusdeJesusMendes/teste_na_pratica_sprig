@@ -34,7 +34,7 @@ public class JogoService {
                 vencedorDao.salvar(vencedor);
                 jogoDao.salva(jogo);
                 // Enviar SMS para o vencedor
-                smsService.enviar(vencedor, "Parabéns, você venceu o jogo!");
+                smsService.enviar(new Sms(vencedor, "Parabéns, você venceu o jogo!"));
             }
         }
     }
