@@ -1,6 +1,7 @@
 package br.com.valueprojects.mock_spring.controller;
 
 import infra.VencedorDao;
+import br.com.valueprojects.mock_spring.model.Participante;
 import br.com.valueprojects.mock_spring.model.Sms;
 import br.com.valueprojects.mock_spring.service.SmsService;
 
@@ -20,6 +21,6 @@ public class SmsController {
         // Cria o SMS
         Sms sms = new Sms(vencedor, "Parabéns, você venceu!");
         // Envia o SMS
-        smsService.enviar(sms);
+        boolean enviou = smsService.enviar(sms);
     }
 }

@@ -7,10 +7,10 @@ import br.com.valueprojects.mock_spring.model.Sms;
 public class SmsService implements Comunicacao {
 
     @Override
-    public boolean enviar(Participante vencedor,String sms) {
+    public boolean enviar(Sms sms) {
     	boolean foiEnviado = false;
         // Simula o envio do SMS
-        System.out.println(vencedor + sms);
+        System.out.println(sms.getVencedor() + sms.getTexto());
         foiEnviado = true;
         return foiEnviado;
     }

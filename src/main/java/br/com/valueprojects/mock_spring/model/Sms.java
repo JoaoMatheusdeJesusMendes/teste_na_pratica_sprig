@@ -4,6 +4,11 @@ public class Sms{
 	private String texto;
 	private Participante vencedor;
 	
+	public Sms(Participante vencedor, String texto) {
+		this.vencedor = vencedor;
+		this.texto = texto;
+	}
+	
 	public String getTexto() {
 		return texto;
 	}
