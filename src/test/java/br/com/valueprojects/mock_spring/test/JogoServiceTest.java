@@ -1,3 +1,4 @@
+package br.com.valueprojects.mock_spring.test;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import org.junit.Before;
